@@ -9,7 +9,7 @@
 //  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 // ============================================================
 
-const MODEL_URL = "https://teachablemachine.withgoogle.com/models/43prg9ZF6/";
+const MODEL_URL = "https://teachablemachine.withgoogle.com/models/1xliG-0Jw/";
 
 // ─── Teachable Machine State ────────────────────────────────
 let tmModel, tmWebcam;
@@ -34,10 +34,10 @@ async function tmLoop() {
   labelText = `${best.className}  ${(conf * 100).toFixed(0)}%`;
 
   if (conf > 0.75) {
-    if (label.includes("thumbs up") || label.includes("thumb up")) {
-      currentGesture = "thumbsup";
-    } else if (label.includes("thumbs down") || label.includes("thumb down")) {
-      currentGesture = "thumbsdown";
+    if (label.includes("red") || label.includes("red")) {
+      currentGesture = "red";
+    } else if (label.includes("green") || label.includes("green")) {
+      currentGesture = "red";
     } else {
       currentGesture = "none";
     }
@@ -89,7 +89,7 @@ let reformTimer = 0;
 // Gesture hold counter
 let lastGesture = "none";
 let gestureHold = 0;
-let statusText = "Show 👍 or 👎";
+let statusText = "Show red or green ball"
 
 function getColor(v) {
   if (v === 1) return color(50, 168, 82);
@@ -164,14 +164,14 @@ function draw() {
   if (g !== lastGesture) { gestureHold = 0; lastGesture = g; }
   else gestureHold++;
 
-  if (g === "thumbsdown" && gestureHold > 20 && state !== STATES.EXPLODE) {
+  if (g === "green" && gestureHold > 20 && state !== STATES.EXPLODE) {
     state = STATES.EXPLODE;
     buildPieces(cx, cy);
     scatterPieces();
     statusText = "💥 BOOM!";
   }
 
-  if (g === "thumbsup" && gestureHold > 20 && state !== STATES.WALK && state !== STATES.REFORM) {
+  if (g === "red" && gestureHold > 20 && state !== STATES.WALK && state !== STATES.REFORM) {
     state = STATES.REFORM;
     reformTimer = 0;
     // Scatter pieces to random locations so they fly IN
